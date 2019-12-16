@@ -11,11 +11,11 @@ import android.widget.Toast
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_youtube.*
 
 //endregion
 
-class MainActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
+class YoutubeActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 
     //region Variable Initialisation
     val videoCode = "wKJ9KzGQq0w"
@@ -25,7 +25,7 @@ class MainActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener 
     //region Activity Life Cycle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_youtube)
         initializeYoutube()
 
     }

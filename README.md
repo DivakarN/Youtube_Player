@@ -1,45 +1,131 @@
-**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
+# Android Youtube Player
 
-When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
+### Introduction:
 
-*We recommend that you open this README in another tab as you perform the tasks below. You can [watch our video](https://youtu.be/0ocf7u76WSo) for a full demo of all the steps in this tutorial. Open the video in a new tab to avoid leaving Bitbucket.*
+This project is created with the intention to understand the integration
+of Youtube player as a Component, as an individual activity and as a 
+standalone project
 
----
 
-## Edit a file
+----------------------------------------------------------------------------------------------------
 
-You’ll start by editing this README file to learn how to edit a file in Bitbucket.
+### Installation:
 
-1. Click **Source** on the left side.
-2. Click the README.md link from the list of files.
-3. Click the **Edit** button.
-4. Delete the following text: *Delete this line to make a change to the README from Bitbucket.*
-5. After making your change, click **Commit** and then **Commit** again in the dialog. The commit page will open and you’ll see the change you just made.
-6. Go back to the **Source** page.
+Step 1: Add the class path dependency to build.gradle
 
----
+Inside dependencies:
 
-## Create a file
+``` 
+implementation files('libs/YouTubeAndroidPlayerApi.jar')
+```
 
-Next, you’ll add a new file to this repository.
 
-1. Click the **New file** button at the top of the **Source** page.
-2. Give the file a filename of **contributors.txt**.
-3. Enter your name in the empty file space.
-4. Click **Commit** and then **Commit** again in the dialog.
-5. Go back to the **Source** page.
+----------------------------------------------------------------------------------------------------
 
-Before you move on, go ahead and explore the repository. You've already seen the **Source** page, but check out the **Commits**, **Branches**, and **Settings** pages.
+### Configuration:
 
----
+Initialize the Youtube Key and Youtube Video code in the MainActivity
 
-## Clone a repository
+```
+val videoCode = "wKJ9KzGQq0w"
+val apiKey = "AIzaSyDv-gjtmZh1h9WKwQbp-aySccEFlDkxFuk"
+```
 
-Use these steps to clone from SourceTree, our client for using the repository command-line free. Cloning allows you to work on your files locally. If you don't yet have SourceTree, [download and install first](https://www.sourcetreeapp.com/). If you prefer to clone from the command line, see [Clone a repository](https://confluence.atlassian.com/x/4whODQ).
 
-1. You’ll see the clone button under the **Source** heading. Click that button.
-2. Now click **Check out in SourceTree**. You may need to create a SourceTree account or log in.
-3. When you see the **Clone New** dialog in SourceTree, update the destination path and name if you’d like to and then click **Clone**.
-4. Open the directory you just created to see your repository’s files.
+----------------------------------------------------------------------------------------------------
 
-Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+### Handler Part:
+
+#### Initialization
+```
+fun initializeYoutube() {
+    yt_pv.initialize(apiKey, this)
+}
+``` 
+
+#### Youtube Delegate Methods
+
+There are few methods given to observe and handle the events of the 
+Youtube player
+
+```
+    override fun onInitializationSuccess(provider: YouTubePlayer.Provider?, player: YouTubePlayer?, wasRestored: Boolean) {
+        showShortToast("Youtube Api Initialization Success")
+        if (!wasRestored) {
+            player?.cueVideo(videoCode);
+        }
+    }
+
+    override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
+        showShortToast("Youtube Api Initialization Failure")
+    }
+```
+
+#### XML Part
+
+You can include the Youtube player in your layout by using following code
+
+```
+    <com.google.android.youtube.player.YouTubePlayerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/yt_pv"/>
+```
+
+----------------------------------------------------------------------------------------------------
+
+### Usage / Example -
+
+You can use this component in three ways
+
+#### As a component
+
+1) Invoke the initialization function in the Activity : 
+
+```
+initializeYoutube()
+```
+
+2) Include below xml component in layout file and adjust its position 
+(if needed)
+
+```
+<com.google.android.youtube.player.YouTubePlayerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/yt_pv"/>
+```
+
+3) Handle the delegate events
+
+```
+ override fun onInitializationSuccess(provider: YouTubePlayer.Provider?, player: YouTubePlayer?, wasRestored: Boolean) {
+        showShortToast("Youtube Api Initialization Success")
+        if (!wasRestored) {
+            player?.cueVideo(videoCode);
+        }
+    }
+
+    override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
+        showShortToast("Youtube Api Initialization Failure")
+    }
+```
+
+
+#### As an Individual Activity
+
+You can readily use YoutubeActivity.kt and activity_youtube.xml in your 
+project for the Integration
+
+
+#### As a standalone Project
+
+You can take a clone of this project and can use it readily.
